@@ -4,12 +4,12 @@ const serverless = require("serverless-http");
 const fs = require("fs");
 
 const handlers = require("./handlers");
+// const signup = require("./db/signup.json");
 
 const app = express();
 const router = express.Router();
 
 app.use(`/.netlify/functions/api`, router);
-
 
 app.use(
   bodyParser.urlencoded({
@@ -51,7 +51,7 @@ router.get("/download", function (req, res) {
 });
 
 router.get("/myfile", (req, res) => {
-  fs.readFile(__dirname + "/db/productInfo.json", "utf8", function (err, data) {
+  fs.readFile("./db/productInfo.json", "utf8", function (err, data) {
     if (err) throw err;
     res.send(data);
   });
@@ -59,7 +59,7 @@ router.get("/myfile", (req, res) => {
 
 router.post("/signup", (req, res) => {
   var existingUser = [];
-  fs.readFile(__dirname + "/db/signup.json", "utf8", function (err, data) {
+  fs.readFile("./db/signup.json", "utf8", function (err, data) {
     if (err) throw err;
     existingUser = [...JSON.parse(data), req.body];
     var writer = fs.createWriteStream("./db/signup.json");
@@ -72,7 +72,7 @@ router.get("/login", (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
 
-  fs.readFile(__dirname + "/db/signup.json", "utf8", function (err, data) {
+  fs.readFile("./db/signup.json", "utf8", function (err, data) {
     if (err) return err;
     const myDB = JSON.parse(data);
     let isValid = false;
@@ -96,7 +96,5 @@ router.get("/login", (req, res) => {
 //   console.log("Server Started Sucess");
 // });
 
-
 module.exports = app;
 module.exports.handler = serverless(app);
-

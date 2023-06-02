@@ -1,5 +1,6 @@
 const myfile = require("./db/productInfo.json");
 const fs = require("fs");
+const path = require("path");
 
 function handleGetMethod(req, res) {
   res.send(`
@@ -105,6 +106,7 @@ const handleProduct = (req, res) => {
   if (productId > 4) res.end("cant find");
   res.send(myfile[productId]);
 };
+
 const updatecolor = (req, res) => {
   res.end(`<html>
     <head style="background-color: ${req.query.color}"> </head>
@@ -136,10 +138,9 @@ const createProduct = (req, res) => {
 
   // console.log(id, price, title, category, description, image);
 
-  fs.readFile(__dirname + "/db/productInfo.json", "utf8", function (err, data) {
+  fs.readFile("./db/productInfo.json", "utf8", function (err, data) {
     if (err) throw err;
 
-    console.log(data, "data data", req.body);
     const newProdcuts = [...JSON.parse(data), req.body];
 
     var writer = fs.createWriteStream("productInfo.json");
@@ -151,7 +152,7 @@ const createProduct = (req, res) => {
 };
 
 function getAllProducts(req, res) {
-  fs.readFile(__dirname + "/db/productInfo.json", "utf8", function (err, data) {
+  fs.readFile("./db/productInfo.json", "utf8", function (err, data) {
     if (err) throw err;
     res.send(JSON.parse(data));
   });
@@ -160,7 +161,7 @@ function getAllProducts(req, res) {
 function getProductById(req, res) {
   const pId = req.params.pId;
  
-  fs.readFile(__dirname + "/db/productInfo.json", "utf8", function (err, data) {
+  fs.readFile("./db/productInfo.json", "utf8", function (err, data) {
     if (err) throw err;
 
     const productsData = JSON.parse(data);
