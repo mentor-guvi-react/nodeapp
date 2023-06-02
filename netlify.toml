@@ -1,5 +1,7 @@
 [build]
   functions = "functions"
+  [functions.api]
+    included_files = ["src/*"]
 
 [dev]
   publish = "dist"
